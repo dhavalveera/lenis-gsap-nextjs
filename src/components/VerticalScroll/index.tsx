@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 // GSAP
 import gsap from "gsap";
@@ -10,7 +10,23 @@ import Lenis from "@studio-freight/lenis";
 // GSAP Register Plugin
 gsap.registerPlugin(ScrollTrigger);
 
+// Styles
+import {
+  Col,
+  ColLeft,
+  ColRight,
+  Container,
+  Vertical,
+  VerticalContent,
+  VerticalHeading,
+  VerticalItem,
+  VerticalWrapper,
+} from "./styles";
+
 const VerticalScroll = () => {
+  const verticalRef = useRef<HTMLElement>(null);
+  const colLeftRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -27,12 +43,10 @@ const VerticalScroll = () => {
 
     requestAnimationFrame(raf);
 
-    const section_1 = document.getElementById("vertical");
-    const col_left = document.querySelector(".col_left");
     const timeln = gsap.timeline({ paused: true });
 
     timeln.fromTo(
-      col_left,
+      colLeftRef.current,
       { y: 0 },
       { y: "170vh", duration: 1, ease: "none" },
       0
@@ -40,7 +54,7 @@ const VerticalScroll = () => {
 
     const scroll_1 = ScrollTrigger.create({
       animation: timeln,
-      trigger: section_1,
+      trigger: verticalRef.current,
       start: "top top",
       end: "bottom center",
       scrub: true,
@@ -48,53 +62,63 @@ const VerticalScroll = () => {
   }, []);
 
   return (
-    <section id="vertical">
-      <div className="container">
-        <div className="vertical__content">
-          <div className="col col_left">
-            <h2 className="vertical__heading">
-              <span>About</span>
-              <span>Smooth</span>
-              <span>Scroll</span>
-            </h2>
-          </div>
-          <div className="col col_right">
-            <div className="vertical__item">
-              <h3>Smooth Scroll Lenis</h3>
-              <p>
-                Lenis is an open-source library built to standardize scroll
-                experiences and sauce up websites with butter-smooth navigation,
-                all while using the platform and keeping it accessible.
-              </p>
-            </div>
-            <div className="vertical__item">
-              <h3>Smooth Scroll Lenis</h3>
-              <p>
-                Lenis is an open-source library built to standardize scroll
-                experiences and sauce up websites with butter-smooth navigation,
-                all while using the platform and keeping it accessible.
-              </p>
-            </div>
-            <div className="vertical__item">
-              <h3>Smooth Scroll Lenis</h3>
-              <p>
-                Lenis is an open-source library built to standardize scroll
-                experiences and sauce up websites with butter-smooth navigation,
-                all while using the platform and keeping it accessible.
-              </p>
-            </div>
-            <div className="vertical__item">
-              <h3>Smooth Scroll Lenis</h3>
-              <p>
-                Lenis is an open-source library built to standardize scroll
-                experiences and sauce up websites with butter-smooth navigation,
-                all while using the platform and keeping it accessible.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <VerticalWrapper>
+      <Vertical ref={verticalRef}>
+        <Container>
+          <VerticalContent>
+            <Col>
+              <ColLeft ref={colLeftRef}>
+                <VerticalHeading>
+                  <span>About</span>
+                  <span>Smooth</span>
+                  <span>Scroll</span>
+                </VerticalHeading>
+              </ColLeft>
+            </Col>
+            <Col>
+              <ColRight className="colRight">
+                <VerticalItem>
+                  <h3>Smooth Scroll Lenis</h3>
+                  <p>
+                    Lenis is an open-source library built to standardize scroll
+                    experiences and sauce up websites with butter-smooth
+                    navigation, all while using the platform and keeping it
+                    accessible.
+                  </p>
+                </VerticalItem>
+                <VerticalItem>
+                  <h3>Smooth Scroll Lenis</h3>
+                  <p>
+                    Lenis is an open-source library built to standardize scroll
+                    experiences and sauce up websites with butter-smooth
+                    navigation, all while using the platform and keeping it
+                    accessible.
+                  </p>
+                </VerticalItem>
+                <VerticalItem>
+                  <h3>Smooth Scroll Lenis</h3>
+                  <p>
+                    Lenis is an open-source library built to standardize scroll
+                    experiences and sauce up websites with butter-smooth
+                    navigation, all while using the platform and keeping it
+                    accessible.
+                  </p>
+                </VerticalItem>
+                <VerticalItem>
+                  <h3>Smooth Scroll Lenis</h3>
+                  <p>
+                    Lenis is an open-source library built to standardize scroll
+                    experiences and sauce up websites with butter-smooth
+                    navigation, all while using the platform and keeping it
+                    accessible.
+                  </p>
+                </VerticalItem>
+              </ColRight>
+            </Col>
+          </VerticalContent>
+        </Container>
+      </Vertical>
+    </VerticalWrapper>
   );
 };
 
