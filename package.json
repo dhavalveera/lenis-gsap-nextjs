@@ -1,0 +1,27 @@
+{
+  "name": "v-h-scroll-lenis-gsap-next",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@studio-freight/lenis": "^1.0.26",
+    "gsap": "^3.12.2",
+    "next": "13.5.4",
+    "react": "^18",
+    "react-dom": "^18",
+    "styled-components": "^6.0.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "eslint": "^8",
+    "eslint-config-next": "13.5.4",
+    "typescript": "^5"
+  }
+}
