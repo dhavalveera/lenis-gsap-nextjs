@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 
 // GSAP
 import gsap from "gsap";
@@ -6,6 +6,9 @@ import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
 // Lenis
 import Lenis from "@studio-freight/lenis";
+
+// Hooks
+import { useIsomorphicLayoutEffect } from "@/hook";
 
 // GSAP Register Plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -27,38 +30,67 @@ const VerticalScroll = () => {
   const verticalRef = useRef<HTMLElement>(null);
   const colLeftRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      smoothTouch: true,
-    });
+  useIsomorphicLayoutEffect(() => {
+    const gsapCtx = gsap.context(() => {
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        smoothTouch: true,
+      });
 
-    const raf = (time: any) => {
-      lenis.raf(time);
-      ScrollTrigger.update();
+      const raf = (time: any) => {
+        lenis.raf(time);
+        ScrollTrigger.update();
+        requestAnimationFrame(raf);
+      };
+
       requestAnimationFrame(raf);
-    };
 
-    requestAnimationFrame(raf);
+      const mm = gsap.matchMedia();
+      const breakPoint = 768;
 
-    const timeln = gsap.timeline({ paused: true });
+      mm.add(
+        {
+          isDesktop: `(min-width: ${breakPoint}px)`,
+          isMobile: `max-width: ${breakPoint - 1}px`,
+        },
+        (ctxx: any) => {
+          const { isDesktop } = ctxx.conditions;
 
-    timeln.fromTo(
-      colLeftRef.current,
-      { y: 0 },
-      { y: "170vh", duration: 1, ease: "none" },
-      0
-    );
+          if (isDesktop) {
+            const timeln = gsap.timeline({ paused: true });
 
-    const scroll_1 = ScrollTrigger.create({
-      animation: timeln,
-      trigger: verticalRef.current,
-      start: "top top",
-      end: "bottom center",
-      scrub: true,
+            timeln.fromTo(
+              colLeftRef.current,
+              { y: 0 },
+              { y: "170vh", duration: 1, ease: "none" },
+              0
+            );
+
+            ScrollTrigger.create({
+              animation: timeln,
+              trigger: verticalRef.current,
+              start: "top top",
+              end: "bottom center",
+              scrub: true,
+            });
+          } else {
+            const timeln = gsap.timeline({ paused: true });
+
+            ScrollTrigger.create({
+              animation: timeln,
+              trigger: verticalRef.current,
+              start: "top top",
+              end: "bottom center",
+              scrub: true,
+            });
+          }
+        }
+      );
     });
+
+    return () => gsapCtx.revert();
   }, []);
 
   return (

@@ -14,24 +14,41 @@ export const Vertical = styled.section`
 export const Container = styled.div`
   width: 95%;
   margin: auto;
+
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const VerticalContent = styled.div`
   display: flex;
   justify-content: center;
   /* align-items: flex-start; */
+  flex-wrap: wrap;
 `;
 
 export const Col = styled.div`
   width: 50%;
+
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const ColLeft = styled.div`
   height: 100%;
+
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const ColRight = styled.div`
   width: 40%;
+
+  @media only screen and (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const VerticalHeading = styled.h2`

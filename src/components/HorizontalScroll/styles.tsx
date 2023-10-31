@@ -8,6 +8,7 @@ export const HorizontalWrapper = styled.div`
 
 export const Horizontal = styled.section`
   padding: 100px 0;
+  overflow: hidden;
 `;
 
 export const Container = styled.div`

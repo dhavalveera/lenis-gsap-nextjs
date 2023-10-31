@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 // GSAP
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+
+// hooks
+import { useIsomorphicLayoutEffect } from "@/hook";
 
 // GSAP Register Plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -17,26 +20,29 @@ import {
 } from "./styles";
 
 const HorizontalScroll = () => {
-  useEffect(() => {
-    // Horizontal Scroll
-    const sectionTwo = document.getElementById("horizontal");
-    const boxItems = gsap.utils.toArray(".horizontal__item");
+  useIsomorphicLayoutEffect(() => {
+    const gsapCtx = gsap.context(() => {
+      // Horizontal Scroll
+      const sectionTwo = document.getElementById("horizontal");
+      const boxItems = gsap.utils.toArray(".horizontal__item");
 
-    gsap.to(boxItems, {
-      xPercent: -100 * (boxItems.length - 1),
-      ease: "none",
-      scrollTrigger: {
-        trigger: sectionTwo,
-        pin: true,
-        scrub: 3,
-        // snap: 1 / (boxItems.length - 1),
-        end: () => "+=" + 100,
-        // endTrigger: ".lastElem",
-        // end: "bottom 50%",
-      },
+      gsap.to(boxItems, {
+        xPercent: -100 * boxItems.length,
+        ease: "sine.out",
+        scrollTrigger: {
+          trigger: sectionTwo,
+          pinnedContainer: sectionTwo,
+          pin: true,
+          scrub: 0.5,
+          // snap: 1 / (boxItems.length - 1),
+          end: () => `+=${sectionTwo?.offsetWidth}`,
+        },
+      });
+
+      ScrollTrigger.refresh();
     });
 
-    ScrollTrigger.refresh();
+    return () => gsapCtx.revert();
   }, []);
 
   return (
